@@ -15,7 +15,7 @@ import java.util.PriorityQueue;
  * @author dks233
  * @create 2022-04-04-22:31
  */
-public class Heap {
+public class MaxHeap {
     public static void main(String[] args) {
         // 默认是小根堆
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();

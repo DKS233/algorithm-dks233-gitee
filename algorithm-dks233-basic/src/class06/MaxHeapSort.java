@@ -8,7 +8,7 @@ import java.util.Arrays;
  * @author dks233
  * @create 2022-04-05-16:47
  */
-public class HeapSort {
+public class MaxHeapSort {
     public static void main(String[] args) {
         int testTimes = 100000;
         int maxLen = 233;
