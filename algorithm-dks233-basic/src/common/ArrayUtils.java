@@ -22,6 +22,22 @@ public class ArrayUtils {
     }
 
     /**
+     * 生成随机数组(非负)
+     *
+     * @param maxLen   数组最大长度
+     * @param maxValue 数组最大值
+     * @return 随机数组
+     */
+    public static int[] randomArrNoNegative(int maxLen, int maxValue) {
+        int len = (int) (Math.random() * (maxLen + 1));
+        int[] randomArr = new int[len];
+        for (int element : randomArr) {
+            element = (int) (Math.random() * (maxValue + 1));
+        }
+        return randomArr;
+    }
+
+    /**
      * 判断两个数组是否相等
      *
      * @param randomArr 排好序的随机数组
@@ -84,4 +100,6 @@ public class ArrayUtils {
     public static int randomNumber(int maxValue) {
         return (int) (Math.random() * (maxValue + 1)) - (int) (Math.random() * (maxValue + 1));
     }
+
+
 }
