@@ -15,8 +15,8 @@ public class ArrayUtils {
     public static int[] randomArr(int maxLen, int maxValue) {
         int len = (int) (Math.random() * (maxLen + 1));
         int[] randomArr = new int[len];
-        for (int element : randomArr) {
-            element = (int) (Math.random() * (maxValue + 1)) - (int) (Math.random() * (maxValue + 1));
+        for (int i = 0; i < randomArr.length; i++) {
+            randomArr[i] = (int) (Math.random() * (maxValue + 1)) - (int) (Math.random() * (maxValue + 1));
         }
         return randomArr;
     }
@@ -31,8 +31,8 @@ public class ArrayUtils {
     public static int[] randomArrNoNegative(int maxLen, int maxValue) {
         int len = (int) (Math.random() * (maxLen + 1));
         int[] randomArr = new int[len];
-        for (int element : randomArr) {
-            element = (int) (Math.random() * (maxValue + 1));
+        for (int i = 0; i < randomArr.length; i++) {
+            randomArr[i] = (int) (Math.random() * (maxValue + 1));
         }
         return randomArr;
     }

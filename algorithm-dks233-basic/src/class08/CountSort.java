@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 /**
  * 计数排序
+ * 本题解默认数组为非负数组
  *
  * @author dks233
  * @create 2022-04-13-22:44
