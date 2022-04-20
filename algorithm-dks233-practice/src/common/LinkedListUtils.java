@@ -30,12 +30,42 @@ public class LinkedListUtils {
         return list;
     }
 
+    // 生成两个节点data值相同的list
+    public static ArrayList<ArrayList<Node>> generateTwoNodeList(int maxLen, int maxValue) {
+        ArrayList<Node> listOne = new ArrayList<>();
+        ArrayList<Node> listTwo = new ArrayList<>();
+        int len = (int) (Math.random() * (maxLen)) + 1;
+        int j = 0;
+        for (j = 0; j < len; j++) {
+            int value = ArrayUtils.randomNumber(maxValue);
+            Node nodeOne = new Node(value);
+            Node nodeTwo = new Node(value);
+            listOne.add(nodeOne);
+            listTwo.add(nodeTwo);
+        }
+        for (j = 0; j < listOne.size() - 1; j++) {
+            listOne.get(j).next = listOne.get(j + 1);
+            listTwo.get(j).next = listTwo.get(j + 1);
+        }
+        listOne.get(listOne.size() - 1).next = null;
+        listTwo.get(listTwo.size() - 1).next = null;
+        ArrayList<ArrayList<Node>> nodeListList = new ArrayList<>();
+        nodeListList.add(listOne);
+        nodeListList.add(listTwo);
+        return nodeListList;
+    }
+
     public static class Node {
         public int data;
         public Node next;
 
         public Node(int data) {
             this.data = data;
+        }
+
+        @Override
+        public String toString() {
+            return " " + data + " ";
         }
     }
 
