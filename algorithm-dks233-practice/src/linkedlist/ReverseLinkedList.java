@@ -54,6 +54,7 @@ public class ReverseLinkedList {
         // 局部反转
         start = reverseOne(start);
         // 恢复连接（找到反转后局部链表的头节点和尾结点，和原链表进行连接）
+        // 先找到反转后链表的头结点，然后根据长度找反转后链表的尾结点
         beforeStart.next = start;
         end = start;
         for (int i = 0; i < right - left; i++) {
@@ -85,8 +86,31 @@ public class ReverseLinkedList {
         // 局部反转
         reverse(start);
         // 恢复连接（找到反转后局部链表的头节点和尾结点，和原链表进行连接）
+        // 最终返回的头节点是end，reverse过程对start和end的位置没影响，知识指向发生了变化
+        // 详细分析见链表反转.drawio
         beforeStart.next = end;
         start.next = afterEnd;
+        return dummyHead.next;
+    }
+
+    // 方法2
+    // 找到局部区域的左边界和左边界的前一个节点，将左边界之后的元素一个个删除，然后插到左边界的前一个节点后面
+    public static ListNode reverseFour(ListNode head, int left, int right) {
+        ListNode dummyHead = new ListNode(0);
+        dummyHead.next = head;
+        // 找到局部区域的左边界和左边界的前一个节点
+        ListNode beforeStart = dummyHead;
+        for (int i = 0; i < left - 1; i++) {
+            beforeStart = beforeStart.next;
+        }
+        ListNode start = beforeStart.next;
+        // 将start后的元素一个个删除，插入到beforeStart之后
+        for (int i = 0; i < right - left; i++) {
+            ListNode deleteNode = start.next;
+            start.next = start.next.next;
+            deleteNode.next = beforeStart.next;
+            beforeStart.next = deleteNode;
+        }
         return dummyHead.next;
     }
 
