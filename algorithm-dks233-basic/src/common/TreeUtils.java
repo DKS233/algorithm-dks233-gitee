@@ -18,9 +18,9 @@ public class TreeUtils {
     /**
      * 根据最大层级和最大值随机生成二叉树
      *
-     * @param maxValue
-     * @param maxLevel
-     * @return
+     * @param maxValue 最大值
+     * @param maxLevel 最大层级
+     * @return 随机二叉树
      */
     public static Node randomBinaryTree(int maxValue, int maxLevel) {
         return getBinaryTree(1, maxLevel, maxValue);
@@ -66,5 +66,39 @@ public class TreeUtils {
             return false;
         }
         return binaryTreeEquals(headOne.left, headTwo.left) && binaryTreeEquals(headOne.right, headTwo.right);
+    }
+
+    /**
+     * 打印二叉树（逆时针旋转90度看）
+     *
+     * @param head 根节点
+     */
+    public static void printTree(Node head) {
+        System.out.println("Binary Tree:");
+        printInOrder(head, 0, "H", 17);
+        System.out.println();
+    }
+
+    public static void printInOrder(Node head, int height, String to, int len) {
+        if (head == null) {
+            return;
+        }
+        printInOrder(head.right, height + 1, "v", len);
+        String val = to + head.data + to;
+        int lenM = val.length();
+        int lenL = (len - lenM) / 2;
+        int lenR = len - lenM - lenL;
+        val = getSpace(lenL) + val + getSpace(lenR);
+        System.out.println(getSpace(height * len) + val);
+        printInOrder(head.left, height + 1, "^", len);
+    }
+
+    public static String getSpace(int num) {
+        String space = " ";
+        StringBuilder buf = new StringBuilder("");
+        for (int i = 0; i < num; i++) {
+            buf.append(space);
+        }
+        return buf.toString();
     }
 }
