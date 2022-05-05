@@ -5,7 +5,12 @@ import java.util.*;
 
 /**
  * 剑指offer37：序列化二叉树
- * null序列化为None
+ * null序列化为None，也可以序列化为null
+ * 可以序列化为String，也可以序列化为queue，只要反序列化结果对就行
+ * leetcode测试规则：
+ * Your Codec object will be instantiated and called as such:
+ * Codec codec = new Codec();
+ * codec.deserialize(codec.serialize(root));
  * 预先复习：二叉树的先序遍历、后序遍历、按层遍历的序列化和反序列化
  * PreSerializeAndDeserialize.java 先序遍历
  * PostSerializeAndDeserialize.java 后序遍历
