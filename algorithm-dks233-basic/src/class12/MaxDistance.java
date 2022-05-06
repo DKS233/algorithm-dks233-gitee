@@ -26,6 +26,7 @@ public class MaxDistance {
     // 经过head：最大距离=左树的高度+右树的高度+1
     // 不经过head：最大距离=左树最大距离/右树最大距离（注：这里的最大距离不等于高度，因为左树或右树的最大距离可能会带有弯曲）
     // 需要的信息：左树/右树的最大距离，左树/右树的高度
+    // 需要返回的子树信息：子树最大距离，子树高度
     public static int getMaxDistance(Node head) {
         return process(head).maxDistance;
     }
