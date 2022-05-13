@@ -5,7 +5,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 /**
- * 加强堆（小根堆）
+ * 加强堆（小根堆）list实现
+ * "小"：排前面
  * 关键：同时处理indexMap和heap
  *
  * @author dks233

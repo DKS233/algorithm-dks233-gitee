@@ -20,10 +20,12 @@ public class MinHeapSort {
             int[] randomArrOne = ArrayUtils.randomArr(maxLen, maxValue);
             int[] copyArrOne = ArrayUtils.copyArr(randomArrOne);
             minHeapSortOne(randomArrOne);
+            reverseArr(randomArrOne);
             comparator(copyArrOne);
             int[] randomArrTwo = ArrayUtils.randomArr(maxLen, maxValue);
             int[] copyArrTwo = ArrayUtils.copyArr(randomArrTwo);
             minHeapSortTwo(randomArrTwo);
+            reverseArr(randomArrTwo);
             comparator(copyArrTwo);
             if (!ArrayUtils.isEquals(randomArrOne, copyArrOne)) {
                 isSuccess = false;
@@ -39,6 +41,14 @@ public class MinHeapSort {
             }
         }
         System.out.println(isSuccess ? "测试成功" : "测试失败");
+    }
+
+    public static void reverseArr(int[] arr) {
+        for (int i = 0; i < arr.length / 2; i++) {
+            int temp = arr[i];
+            arr[i] = arr[arr.length - 1 - i];
+            arr[arr.length - 1 - i] = temp;
+        }
     }
 
     public static void minHeapSortOne(int[] arr) {
