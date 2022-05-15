@@ -59,7 +59,4 @@ public class Dijkstra {
         }
     }
 
-    public static class MethodTwo {
-
-    }
 }
