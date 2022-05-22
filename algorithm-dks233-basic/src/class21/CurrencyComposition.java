@@ -58,20 +58,43 @@ public class CurrencyComposition {
         return dp[0][aim];
     }
 
+    // 为了测试
     public static void main(String[] args) {
-        int testTimes = 10000;
-        int maxLen = 23;
-        int maxValue = 233;
+        int maxLen = 20;
+        int maxValue = 30;
+        int testTime = 1000000;
         boolean isSuccess = true;
-        for (int i = 0; i < testTimes; i++) {
-            int[] arr = ArrayUtils.randomArrNoNegative(maxLen, maxValue);
+        for (int i = 0; i < testTime; i++) {
+            int[] arr = randomArray(maxLen, maxValue);
             int aim = (int) (Math.random() * maxValue);
-            if (getMethodCountOne(arr, aim) != getMethodCountTwo(arr, aim)) {
+            int ans1 = getMethodCountOne(arr, aim);
+            int ans2 = getMethodCountTwo(arr, aim);
+            if (ans1 != ans2) {
                 isSuccess = false;
+                printArray(arr);
+                System.out.println(aim);
+                System.out.println(ans1);
+                System.out.println(ans2);
                 break;
             }
         }
         System.out.println(isSuccess ? "测试成功" : "测试失败");
+    }
+
+    public static int[] randomArray(int maxLen, int maxValue) {
+        int N = (int) (Math.random() * maxLen);
+        int[] arr = new int[N];
+        for (int i = 0; i < N; i++) {
+            arr[i] = (int) (Math.random() * maxValue) + 1;
+        }
+        return arr;
+    }
+
+    public static void printArray(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
     }
 
 }
