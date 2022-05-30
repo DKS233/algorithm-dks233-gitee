@@ -65,8 +65,8 @@ public class TakeCards {
         // 初始化为-1
         // firstArea[i][j]==-1说明先手该区域未被处理过
         // firstArea[i][j]!=-1 说明先手该区域已经被处理过，直接从缓存里取就行
-        // secondArea[i][j]==-1说明先手该区域未被处理过
-        // secondArea[i][j]!=-1 说明先手该区域已经被处理过，直接从缓存里取就行
+        // secondArea[i][j]==-1说明后手该区域未被处理过
+        // secondArea[i][j]!=-1 说明后手该区域已经被处理过，直接从缓存里取就行
         int[][] firstArea = new int[arr.length][arr.length];
         int[][] secondArea = new int[arr.length][arr.length];
         for (int i = 0; i < firstArea.length; i++) {
@@ -162,10 +162,41 @@ public class TakeCards {
         return Math.max(firstMap[0][arr.length - 1], secondMap[0][arr.length - 1]);
     }
 
+    // 动态规划对角线依次填表的另一种写法
+    public static int getWinnerScoreFour(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
+        int[][] firstArea = new int[arr.length][arr.length];
+        int[][] secondArea = new int[arr.length][arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            firstArea[i][i] = arr[i];
+        }
+        // firstArea每个位置依赖secondArea的左边位置和下边位置
+        // secondArea每个位置依赖firstArea的左边位置和下边位置
+        // arr.length=5
+        // (0,1)->(1,2)->(2,3)->(3,4) gap=1
+        // (0,2)->(1,3)->(2,4) gap=2
+        // (0,3)->(1,4) gap=3
+        // (0,4) gap=4
+        for (int gap = 1; gap < arr.length; gap++) {
+            for (int left = 0; left < arr.length - gap; left++) {
+                int p1 = arr[left] + secondArea[left + 1][left + gap];
+                int p2 = arr[left + gap] + secondArea[left][left + gap - 1];
+                firstArea[left][left + gap] = Math.max(p1, p2);
+                int p3 = firstArea[left + 1][left + gap];
+                int p4 = firstArea[left][left + gap - 1];
+                secondArea[left][left + gap] = Math.min(p3, p4);
+            }
+        }
+        return Math.max(firstArea[0][arr.length - 1], secondArea[0][arr.length - 1]);
+    }
+
     public static void main(String[] args) {
-        int[] arr = { 5, 7, 4, 5, 8, 1, 6, 0, 3, 4, 6, 1, 7 };
+        int[] arr = {5, 7, 4, 5, 8, 1, 6, 0, 3, 4, 6, 1, 7};
         System.out.println(getWinnerScoreOne(arr));
         System.out.println(getWinnerScoreTwo(arr));
         System.out.println(getWinnerScoreThree(arr));
+        System.out.println(getWinnerScoreFour(arr));
     }
 }
