@@ -171,7 +171,7 @@ public class AvlTree {
             return maintain(cur);
         }
 
-        // 找到key节点的上一个节点
+        // 找到离key最近的节点（最近：该节点的key和key差距最小）
         public AvlNode<K, V> findLastIndex(K key) {
             AvlNode<K, V> pre = root;
             AvlNode<K, V> cur = root;
@@ -179,49 +179,140 @@ public class AvlTree {
                 pre = cur;
                 if (key.compareTo(cur.key) == 0) {
                     break;
-                } else if (key.compareTo(cur.key) > 0) {
-                    cur = cur.right;
-                } else {
+                } else if (key.compareTo(cur.key) < 0) {
                     cur = cur.left;
+                } else {
+                    cur = cur.right;
                 }
             }
             return pre;
         }
 
-        // 找到不小于key的最后一个节点
+        // 找到>=key的离key最近的节点（最近：该节点的key和key差距最小）
+        // 即>=key的最大节点
         public AvlNode<K, V> findLastNoSmallIndex(K key) {
-            AvlNode<K, V> last = null;
+            AvlNode<K, V> ans = null;
             AvlNode<K, V> cur = root;
             while (cur != null) {
                 if (key.compareTo(cur.key) == 0) {
-                    last = cur;
+                    ans = cur;
                     break;
                 } else if (key.compareTo(cur.key) < 0) {
-                    last = cur;
+                    ans = cur;
                     cur = cur.left;
                 } else {
                     cur = cur.right;
                 }
             }
-            return last;
+            return ans;
         }
 
-        // 找到不大于key的最后一个节点
+        // 找到<=key的离key最近的节点（最近：该节点的key和key差距最小）
+        // 即<=key的最小节点
         public AvlNode<K, V> findLastNoBigIndex(K key) {
-            AvlNode<K, V> last = null;
+            AvlNode<K, V> ans = null;
             AvlNode<K, V> cur = root;
             while (cur != null) {
                 if (key.compareTo(cur.key) == 0) {
-                    last = cur;
+                    ans = cur;
                     break;
                 } else if (key.compareTo(cur.key) < 0) {
-                    last = cur;
                     cur = cur.left;
                 } else {
+                    ans = cur;
                     cur = cur.right;
                 }
             }
-            return last;
+            return ans;
+        }
+
+        public int getSize() {
+            return size;
+        }
+
+        public boolean containsKey(K key) {
+            if (key == null) {
+                return false;
+            }
+            AvlNode<K, V> node = findLastIndex(key);
+            return node != null && node.key.compareTo(key) == 0 ? true : false;
+        }
+
+        public void put(K key, V value) {
+            if (key == null) {
+                return;
+            }
+            AvlNode<K, V> node = findLastIndex(key);
+            // key节点已经存在
+            if (node != null && key.compareTo(node.key) == 0) {
+                node.value = value;
+            } else {
+                root = add(root, key, value);
+                size++;
+            }
+        }
+
+        public void remove(K key) {
+            if (key == null) {
+                return;
+            }
+            if (containsKey(key)) {
+                size--;
+                root = delete(root, key);
+            }
+        }
+
+        public V get(K key) {
+            if (key == null) {
+                return null;
+            }
+            AvlNode<K, V> node = findLastIndex(key);
+            if (node != null && key.compareTo(key) == 0) {
+                return node.value;
+            }
+            return null;
+        }
+
+        // 中序遍历第一个key
+        public K firstKey() {
+            if (root == null) {
+                return null;
+            }
+            AvlNode<K, V> cur = root;
+            while (cur.left != null) {
+                cur = cur.left;
+            }
+            return cur.key;
+        }
+
+        // 中序遍历最后一个key
+        public K lastKey() {
+            if (root == null) {
+                return null;
+            }
+            AvlNode<K, V> cur = root;
+            while (cur.right != null) {
+                cur = cur.right;
+            }
+            return cur.key;
+        }
+
+        // <=key的最大节点
+        public K floorKey(K key) {
+            if (key == null) {
+                return null;
+            }
+            AvlNode<K, V> node = findLastNoBigIndex(key);
+            return node == null ? null : node.key;
+        }
+
+        // >=key的最小节点
+        public K ceilingKey(K key) {
+            if (key == null) {
+                return null;
+            }
+            AvlNode<K, V> node = findLastNoSmallIndex(key);
+            return node == null ? null : node.key;
         }
     }
 
