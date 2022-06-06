@@ -34,6 +34,7 @@ public class AvlTree {
 
         // 右旋操作
         // cur为头的子树是不平衡的，平衡因子大于1
+        // 步骤：先确定右旋后cur和left的位置，然后再看其他位置填入到哪里（位置变化后中序遍历顺序不会变）
         public AvlNode<K, V> rotateRight(AvlNode<K, V> cur) {
             AvlNode<K, V> left = cur.left;
             cur.left = left.right;
@@ -46,6 +47,7 @@ public class AvlTree {
 
         // 左旋操作
         // cur为头的子树是不平衡的，平衡因子小于-1
+        // 步骤：先确定左旋后cur和right的位置，然后再看其他位置填入到哪里（位置变化后中序遍历顺序不会变）
         public AvlNode<K, V> rotateLeft(AvlNode<K, V> cur) {
             AvlNode<K, V> right = cur.right;
             cur.right = right.left;
@@ -57,6 +59,7 @@ public class AvlTree {
         }
 
         // 维持cur为头的AVL树的平衡性
+        // maintain过程中的高度调整在左旋右旋方法中
         public AvlNode<K, V> maintain(AvlNode<K, V> cur) {
             if (cur == null) {
                 return null;
@@ -72,12 +75,12 @@ public class AvlTree {
                 // 情况1：LL型
                 // 情况2：LL型和LR型同时出现，按照LL型处理
                 // LL型需要一次旋转，LR型需要两次旋转
-                // LL型也可以理解为cur和其左子树的平衡因子符号相等
+                // LL型情况下cur和其左子树的平衡因子符号相等
                 if (leftLeftHeight >= leftRightHeight) {
                     cur = rotateRight(cur);
                 }
                 // leftLeftHeight < leftRightHeight表示LR型，需要两次旋转
-                // LR型，也可以理解为cur和其左子树的平衡因子符号不相等
+                // LR型情况下cur和其左子树的平衡因子符号不相等
                 else {
                     cur.left = rotateLeft(cur.left);
                     cur = rotateRight(cur);
@@ -91,12 +94,12 @@ public class AvlTree {
                 // 情况1：RL型
                 // 情况2：RL型和RR型同时出现，按照RR型处理
                 // RR型需要一次旋转，RL型需要两次旋转
-                // RR型也可以理解为cur和其右子树的平衡因子符号相等
+                // RR型情况下cur和其右子树的平衡因子符号相等
                 if (rightRightHeight >= rightLeftHeight) {
                     cur = rotateLeft(cur);
                 }
                 // rightLeftHeight < rightRightHeight表示RL型，需要两次旋转
-                // RL型，也可以理解为cur和其右子树的平衡因子符号不相等
+                // RL型情况下cur和其右子树的平衡因子符号不相等
                 else {
                     cur.right = rotateRight(cur.right);
                     cur = rotateLeft(cur);
@@ -106,6 +109,7 @@ public class AvlTree {
         }
 
         // 向cur为头的AVL树中添加节点
+        // 添加节点的时候会从下往上检查和调整平衡，maintain既是检查又是调整
         public AvlNode<K, V> add(AvlNode<K, V> cur, K key, V value) {
             if (cur == null) {
                 return new AvlNode<>(key, value);
@@ -125,6 +129,7 @@ public class AvlTree {
         }
 
         // 从cur为头的AVL树中删除节点
+        // 从下晚上，所有受影响的节点，依次进行检查和调整
         public AvlNode<K, V> delete(AvlNode<K, V> cur, K key) {
             // 需要删除的key大于cur.key，去右子树上删
             if (key.compareTo(cur.key) > 0) {
@@ -141,12 +146,12 @@ public class AvlTree {
                     return null;
                 }
                 // cur有左子树，没右子树，删除cur，用cur.left代替，然后调整树
-                // 按照处理二叉搜索树的删除逻辑，这里应该是用中序遍历的前驱代替，不过因为有树的调整，结果是一样的
+                // 这里也可以用前驱节点代替cur，然后删除前驱节点
                 else if (cur.left != null && cur.right == null) {
                     cur = cur.left;
                 }
                 // cur有右子树，没左子树，删除cur，用cur.right代替，然后调整树
-                // 按照处理二叉搜索树的删除逻辑，这里应该是用中序遍历的后继代替，不过因为有树的调整，结果是一样的
+                // 这里也可以用后继节点代替cur，然后删除后继节点
                 else if (cur.right != null && cur.left == null) {
                     cur = cur.right;
                 }
@@ -189,7 +194,7 @@ public class AvlTree {
         }
 
         // 找到>=key的离key最近的节点（最近：该节点的key和key差距最小）
-        // 即>=key的最大节点
+        // 即>=key的最小节点
         public AvlNode<K, V> findLastNoSmallIndex(K key) {
             AvlNode<K, V> ans = null;
             AvlNode<K, V> cur = root;
@@ -208,7 +213,7 @@ public class AvlTree {
         }
 
         // 找到<=key的离key最近的节点（最近：该节点的key和key差距最小）
-        // 即<=key的最小节点
+        // 即<=key的最大节点
         public AvlNode<K, V> findLastNoBigIndex(K key) {
             AvlNode<K, V> ans = null;
             AvlNode<K, V> cur = root;
@@ -274,6 +279,7 @@ public class AvlTree {
         }
 
         // 中序遍历第一个key
+        // 如果只有右树，返回的是cur.key
         public K firstKey() {
             if (root == null) {
                 return null;
@@ -286,6 +292,7 @@ public class AvlTree {
         }
 
         // 中序遍历最后一个key
+        // 如果只有左树，返回的是cur.key
         public K lastKey() {
             if (root == null) {
                 return null;
