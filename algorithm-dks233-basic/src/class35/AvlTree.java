@@ -181,12 +181,12 @@ public class AvlTree {
                     return null;
                 }
                 // cur有左子树，没右子树，删除cur，用cur.left代替，然后调整树
-                // 这里也可以用前驱节点代替cur，然后删除前驱节点
+                // 这里也可以用前驱节点代替cur，然后删除前驱节点(cur.key=前驱.key)
                 else if (cur.left != null && cur.right == null) {
                     cur = cur.left;
                 }
                 // cur有右子树，没左子树，删除cur，用cur.right代替，然后调整树
-                // 这里也可以用后继节点代替cur，然后删除后继节点
+                // 这里也可以用后继节点代替cur，然后删除后继节点(cur.key=后继.key)
                 else if (cur.right != null && cur.left == null) {
                     cur = cur.right;
                 }
@@ -215,7 +215,7 @@ public class AvlTree {
             return maintain(cur);
         }
 
-        // 找到离key最近的节点（最近：该节点的key和key差距最小）
+        // 找到离key最近的节点
         public AvlNode<K, V> findLastIndex(K key) {
             AvlNode<K, V> pre = root;
             AvlNode<K, V> cur = root;
@@ -232,7 +232,7 @@ public class AvlTree {
             return pre;
         }
 
-        // 找到>=key的离key最近的节点（最近：该节点的key和key差距最小）
+        // 找到>=key的离key最近的节点
         // 即>=key的最小节点
         public AvlNode<K, V> findLastNoSmallIndex(K key) {
             AvlNode<K, V> ans = null;
@@ -251,7 +251,7 @@ public class AvlTree {
             return ans;
         }
 
-        // 找到<=key的离key最近的节点（最近：该节点的key和key差距最小）
+        // 找到<=key的离key最近的节点
         // 即<=key的最大节点
         public AvlNode<K, V> findLastNoBigIndex(K key) {
             AvlNode<K, V> ans = null;
