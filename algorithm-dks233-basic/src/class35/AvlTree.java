@@ -108,6 +108,41 @@ public class AvlTree {
             return cur;
         }
 
+        // LL LR RL RR LL+LR=LL RL+RR==RR
+        // maintain的另一种写法，体现在LL LR RL RR四种违反平衡的错误上
+        // 具体见笔记中的：对应到AVL树中LL/LR/RL/RR/LL+LR/RL+RR型代表含义，用cur代表不平衡的子树，各子树的大小关系如下
+        public AvlNode<K, V> maintainTwo(AvlNode<K, V> cur) {
+            int leftHeight = cur.left == null ? 0 : cur.left.height;
+            int rightHeight = cur.right == null ? 0 : cur.right.height;
+            int leftLeftHeight = cur.left != null && cur.left.left != null ? cur.left.left.height : 0;
+            int leftRightHeight = cur.left != null && cur.left.right != null ? cur.left.right.height : 0;
+            int rightLeftHeight = cur.right != null && cur.right.left != null ? cur.right.left.height : 0;
+            int rightRightHeight = cur.right != null && cur.right.right != null ? cur.right.right.height : 0;
+            if (leftHeight - rightHeight > 1) {
+                // LL  LL+LR
+                if (leftLeftHeight > rightHeight) {
+                    cur = rotateRight(cur);
+                }
+                // LR
+                if (leftRightHeight > rightHeight) {
+                    cur.left = rotateLeft(cur.left);
+                    cur = rotateRight(cur);
+                }
+            }
+            if (rightHeight - leftHeight > 1) {
+                // RL
+                if (rightLeftHeight > leftHeight) {
+                    cur.right = rotateRight(cur.right);
+                    cur = rotateLeft(cur);
+                }
+                // RR  RL+RR
+                if (rightRightHeight > leftHeight) {
+                    cur = rotateLeft(cur);
+                }
+            }
+            return cur;
+        }
+
         // 向cur为头的AVL树中添加节点
         // 添加节点的时候会从下往上检查和调整平衡，maintain既是检查又是调整
         public AvlNode<K, V> add(AvlNode<K, V> cur, K key, V value) {
@@ -121,7 +156,7 @@ public class AvlTree {
                     // 加入的节点key大于cur.key，去右子树中添加
                     cur.right = add(cur.right, key, value);
                 }
-                // 更新cur的高度
+                // 更新cur的高度（从下往上）
                 cur.height = Math.max(cur.left == null ? 0 : cur.left.height, cur.right == null ? 0 : cur.right.height) + 1;
                 // 节点添加完后，维持cur为头的AVL树的平衡性
                 return maintain(cur);
@@ -129,7 +164,7 @@ public class AvlTree {
         }
 
         // 从cur为头的AVL树中删除节点
-        // 从下晚上，所有受影响的节点，依次进行检查和调整
+        // 从下往上，所有受影响的节点，依次进行检查和调整
         public AvlNode<K, V> delete(AvlNode<K, V> cur, K key) {
             // 需要删除的key大于cur.key，去右子树上删
             if (key.compareTo(cur.key) > 0) {
@@ -161,15 +196,19 @@ public class AvlTree {
                     while (successor.left != null) {
                         successor = successor.left;
                     }
-                    // 先从cur的右子树中删除successor
+                    // 方法1：先从cur的右子树中删除successor，然后更新cur
+                    AvlNode<K, V> newCur = successor;
                     cur.right = delete(cur.right, successor.key);
-                    // 然后用得到的successor代替cur
-                    successor.left = cur.left;
-                    successor.right = cur.right;
-                    cur = successor;
+                    newCur.left = cur.left;
+                    newCur.right = cur.right;
+                    cur = newCur;
+                    // 方法2：先更新cur的key，然后去右子树中删除successor
+                    // cur.key = successor.key;
+                    // cur.right = delete(cur.right, cur.key);
                 }
             }
             if (cur != null) {
+                // 从下往上更新高度，然后检查和调整平衡
                 cur.height = Math.max(cur.left == null ? 0 : cur.left.height, cur.right == null ? 0 : cur.right.height) + 1;
             }
             // 节点删除后调整AVL树
