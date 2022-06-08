@@ -9,11 +9,11 @@ package class36;
  */
 public class SizeBalancedTree {
     public static class SbNode<K extends Comparable<K>, V> {
-        SbNode<K, V> left;
-        SbNode<K, V> right;
-        K key;
-        V value;
-        int size; // 节点个数
+        public SbNode<K, V> left;
+        public SbNode<K, V> right;
+        public K key;
+        public V value;
+        public int size; // 节点个数
 
         public SbNode(K key, V value) {
             this.key = key;
@@ -71,7 +71,7 @@ public class SizeBalancedTree {
                 cur = maintain(cur);
             }
             // LR型 先左旋，再右旋，递归检查调整
-            if (leftRightSize > rightSize) {
+            else if (leftRightSize > rightSize) {
                 cur.left = rotateLeft(cur.left);
                 cur = rotateRight(cur);
                 cur.left = maintain(cur.left);
@@ -79,13 +79,13 @@ public class SizeBalancedTree {
                 cur = maintain(cur);
             }
             // RR型  左旋，递归检查调整
-            if (rightRightSize > leftSize) {
+            else if (rightRightSize > leftSize) {
                 cur = rotateLeft(cur);
                 cur.left = maintain(cur.left);
                 cur = maintain(cur);
             }
             // RL型 先右旋，再左旋，递归检查调整
-            if (rightLeftSize > leftSize) {
+            else if (rightLeftSize > leftSize) {
                 cur.right = rotateRight(cur.right);
                 cur = rotateLeft(cur);
                 cur.left = maintain(cur.left);
@@ -101,7 +101,6 @@ public class SizeBalancedTree {
             if (cur == null) {
                 return new SbNode<>(key, value);
             }
-            cur.size++;
             if (key.compareTo(cur.key) < 0) {
                 cur.left = add(cur.left, key, value);
             } else if (key.compareTo(cur.key) > 0) {
@@ -109,6 +108,8 @@ public class SizeBalancedTree {
             } else {
                 cur.value = value;
             }
+            // 从下往上更新size
+            cur.size = (cur.left == null ? 0 : cur.left.size) + (cur.right == null ? 0 : cur.right.size) + 1;
             return maintain(cur);
         }
 
@@ -118,14 +119,13 @@ public class SizeBalancedTree {
             if (cur == null) {
                 return null;
             }
-            cur.size--;
             // 需要删除的节点在cur左子树上
             if (key.compareTo(cur.key) < 0) {
                 cur.left = delete(cur.left, key);
             }
             // 需要删除的节点在cur右子树上
             else if (key.compareTo(cur.key) > 0) {
-                cur.left = delete(cur.right, key);
+                cur.right = delete(cur.right, key);
             }
             // cur就是需要删除的节点
             else {
@@ -143,27 +143,28 @@ public class SizeBalancedTree {
                 else if (cur.left == null && cur.right != null) {
                     cur = cur.right;
                 }
-                // cur既有左子树也有右子树，删除cur，然后用前驱或后继节点代替
+                // cur既有左子树也有右子树，，以后继节点为例
                 else {
-                    SbNode<K, V> pre = null;
                     SbNode<K, V> successor = cur.right;
-                    successor.size--;
                     while (successor.left != null) {
-                        pre = successor;
                         successor = successor.left;
-                        successor.size--;
                     }
-                    if (pre != null) {
-                        pre.left = successor.right;
-                        successor.right = cur.right;
-                    }
+                    // 方法1：删除后继节点，然后用后继节点代替cur
+                    cur.right = delete(cur.right, successor.key);
                     successor.left = cur.left;
-                    successor.size = successor.left.size + (successor.right == null ? 0 : successor.right.size) + 1;
+                    successor.right = cur.right;
                     cur = successor;
+                    // 方法2：用后继节点的key代替cur.key，然后删除后继节点
+                    // cur.key = successor.key;
+                    // cur.right = delete(cur.right, cur.key);
                 }
             }
-            // 可以不用平 return cur;
-            // return maintain(cur);
+            if (cur != null) {
+                // 从下往上更新size
+                cur.size = (cur.left == null ? 0 : cur.left.size) + (cur.right == null ? 0 : cur.right.size) + 1;
+            }
+            // 不调平也可以：return cur;
+            // 调平也可以：cur = maintain(cur);  return cur;
             return cur;
         }
 
@@ -248,8 +249,7 @@ public class SizeBalancedTree {
             if (key == null) {
                 return;
             }
-            SbNode<K, V> lastNode = findLastIndex(key);
-            if (lastNode != null && key.compareTo(lastNode.key) == 0) {
+            if (containsKey(key)) {
                 root = delete(root, key);
             }
         }
@@ -284,25 +284,19 @@ public class SizeBalancedTree {
                 return null;
             }
             SbNode<K, V> node = findLastNoBigIndex(key);
-            if (node != null && key.compareTo(node.key) >= 0) {
-                return node.key;
-            }
-            return null;
+            return node == null ? null : node.key;
         }
 
-        // >=key的最大key
+        // >=key最小key
         public K ceilingKey(K key) {
             if (key == null) {
                 return null;
             }
             SbNode<K, V> node = findLastNoSmallIndex(key);
-            if (node != null && key.compareTo(node.key) <= 0) {
-                return node.key;
-            }
-            return null;
+            return node == null ? null : node.key;
         }
 
-        // 获取第kth个节点
+        // 获取第kth个节点  kth >= 1
         public SbNode<K, V> getIndex(SbNode<K, V> cur, int kth) {
             if (cur == null) {
                 return null;
@@ -317,7 +311,7 @@ public class SizeBalancedTree {
             }
         }
 
-        // 获得index位置的key
+        // 获得index位置的key index >= 0
         public K getIndexKey(int index) {
             if (index < 0 || index >= getSize()) {
                 throw new RuntimeException("index out exception");

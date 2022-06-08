@@ -1,9 +1,10 @@
 package class36;
 
+
+import class36.SizeBalancedTree.SbNode;
 import class36.SizeBalancedTree.SbTree;
 
 import java.util.TreeMap;
-
 
 // SB树对数器
 public class SizeBalancedTreeComparator {
@@ -24,7 +25,6 @@ public class SizeBalancedTreeComparator {
             int removeK = (int) (Math.random() * maxK);
             treeMap.remove(removeK);
             sbt.remove(removeK);
-
             int querryK = (int) (Math.random() * maxK);
             if (treeMap.containsKey(querryK) != sbt.containsKey(querryK)) {
                 System.out.println("containsKey Oops");
@@ -32,7 +32,6 @@ public class SizeBalancedTreeComparator {
                 System.out.println(sbt.containsKey(querryK));
                 break;
             }
-
             if (treeMap.containsKey(querryK)) {
                 int v1 = treeMap.get(querryK);
                 int v3 = sbt.get(querryK);
@@ -92,7 +91,6 @@ public class SizeBalancedTreeComparator {
                 }
 
             }
-
             Integer f1 = treeMap.firstKey();
             Integer f3 = sbt.firstKey();
             if (f1 == null && (f3 != null)) {
@@ -117,7 +115,6 @@ public class SizeBalancedTreeComparator {
                     break;
                 }
             }
-
             f1 = treeMap.lastKey();
             f3 = sbt.lastKey();
             if (f1 == null && (f3 != null)) {
@@ -169,14 +166,12 @@ public class SizeBalancedTreeComparator {
         end = System.currentTimeMillis();
         System.out.println("treeMap 运行时间 : " + (end - start) + "ms");
 
-
         start = System.currentTimeMillis();
         for (int i = 0; i < max; i++) {
             sbt.put(i, i);
         }
         end = System.currentTimeMillis();
         System.out.println("sbt 运行时间 : " + (end - start) + "ms");
-
 
         System.out.println("顺序递增删除测试，数据规模 : " + max);
         start = System.currentTimeMillis();
@@ -185,7 +180,6 @@ public class SizeBalancedTreeComparator {
         }
         end = System.currentTimeMillis();
         System.out.println("treeMap 运行时间 : " + (end - start) + "ms");
-
 
         start = System.currentTimeMillis();
         for (int i = 0; i < max; i++) {
@@ -201,7 +195,6 @@ public class SizeBalancedTreeComparator {
         }
         end = System.currentTimeMillis();
         System.out.println("treeMap 运行时间 : " + (end - start) + "ms");
-
 
         start = System.currentTimeMillis();
         for (int i = max; i >= 0; i--) {
