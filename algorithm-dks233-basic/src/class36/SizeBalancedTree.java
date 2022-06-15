@@ -45,6 +45,7 @@ public class SizeBalancedTree {
             return right;
         }
 
+        // maintain处理左旋右旋操作，不处理size更新，size更新在add和delete方法中进行
         // LL LR RL RR LL+LR=LL RL+RR=RR
         // LL：cur.left.left.size > cur.right.size
         // LR：cur.left.right.size > cur.right.size
@@ -110,6 +111,7 @@ public class SizeBalancedTree {
             }
             // 从下往上更新size
             cur.size = (cur.left == null ? 0 : cur.left.size) + (cur.right == null ? 0 : cur.right.size) + 1;
+            // 这里cur.left和cur.right已经在递归过程中maintain过了
             return maintain(cur);
         }
 
@@ -144,17 +146,18 @@ public class SizeBalancedTree {
                     cur = cur.right;
                 }
                 // cur既有左子树也有右子树，，以后继节点为例
+                // 用中序遍历前驱或后继节点代替cur，然后删除前驱或后继节点
                 else {
                     SbNode<K, V> successor = cur.right;
                     while (successor.left != null) {
                         successor = successor.left;
                     }
-                    // 方法1：删除后继节点，然后用后继节点代替cur
+                    // 写法1
                     cur.right = delete(cur.right, successor.key);
                     successor.left = cur.left;
                     successor.right = cur.right;
                     cur = successor;
-                    // 方法2：用后继节点的key代替cur.key，然后删除后继节点
+                    // 写法2
                     // cur.key = successor.key;
                     // cur.right = delete(cur.right, cur.key);
                 }
@@ -305,7 +308,7 @@ public class SizeBalancedTree {
             if (kth == leftSize + 1) {
                 return cur;
             } else if (kth < leftSize + 1) {
-                return getIndex(cur.left, kth);
+                return getIndex(cur.left, kth - 1);
             } else {
                 return getIndex(cur.right, kth - leftSize - 1);
             }
