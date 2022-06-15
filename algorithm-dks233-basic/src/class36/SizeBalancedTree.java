@@ -45,7 +45,6 @@ public class SizeBalancedTree {
             return right;
         }
 
-        // maintain处理左旋右旋操作，不处理size更新，size更新在add和delete方法中进行
         // LL LR RL RR LL+LR=LL RL+RR=RR
         // LL：cur.left.left.size > cur.right.size
         // LR：cur.left.right.size > cur.right.size
