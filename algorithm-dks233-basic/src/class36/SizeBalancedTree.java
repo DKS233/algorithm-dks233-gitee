@@ -175,6 +175,7 @@ public class SizeBalancedTree {
             SbNode<K, V> pre = this.root;
             SbNode<K, V> cur = this.root;
             while (cur != null) {
+                // 只要cur不为null，pre就跟上，cur向左子节点和右子节点走都是尽量接近key的
                 pre = cur;
                 if (key.compareTo(cur.key) == 0) {
                     break;
@@ -196,6 +197,8 @@ public class SizeBalancedTree {
                     pre = cur;
                     break;
                 } else if (key.compareTo(cur.key) < 0) {
+                    // 当前节点的key值大于key
+                    // pre跟上cur，然后cur向左子节点走，尽量小
                     pre = cur;
                     cur = cur.left;
                 } else {
@@ -216,6 +219,8 @@ public class SizeBalancedTree {
                 } else if (key.compareTo(cur.key) < 0) {
                     cur = cur.left;
                 } else {
+                    // 当前节点的key值小于key
+                    // pre跟上cur，然后cur向右子节点走，尽量大
                     pre = cur;
                     cur = cur.right;
                 }
