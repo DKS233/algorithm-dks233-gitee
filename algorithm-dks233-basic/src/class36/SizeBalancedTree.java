@@ -152,13 +152,14 @@ public class SizeBalancedTree {
                         successor = successor.left;
                     }
                     // 写法1
-                    cur.right = delete(cur.right, successor.key);
-                    successor.left = cur.left;
-                    successor.right = cur.right;
-                    cur = successor;
+                    // cur.right = delete(cur.right, successor.key);
+                    // successor.left = cur.left;
+                    // successor.right = cur.right;
+                    // cur = successor;
                     // 写法2
-                    // cur.key = successor.key;
-                    // cur.right = delete(cur.right, cur.key);
+                    cur.right = delete(cur.right, successor.key);
+                    cur.key = successor.key;
+                    cur.value = successor.value;
                 }
             }
             if (cur != null) {
@@ -167,7 +168,7 @@ public class SizeBalancedTree {
             }
             // 不调平也可以：return cur;
             // 调平也可以：cur = maintain(cur);  return cur;
-            return cur;
+            return maintain(cur);
         }
 
         // 找到离key最近的节点

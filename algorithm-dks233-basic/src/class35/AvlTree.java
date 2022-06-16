@@ -196,15 +196,16 @@ public class AvlTree {
                     while (successor.left != null) {
                         successor = successor.left;
                     }
-                    // 方法1：先从cur的右子树中删除successor，然后更新cur
-                    AvlNode<K, V> newCur = successor;
+                    // 用中序遍历前驱或后继节点代替cur，然后删除前驱或后继节点
+                    // 写法1
+                    // cur.right = delete(cur.right, successor.key);
+                    // successor.left = cur.left;
+                    // successor.right = cur.right;
+                    // cur = successor;
+                    // 写法2
                     cur.right = delete(cur.right, successor.key);
-                    newCur.left = cur.left;
-                    newCur.right = cur.right;
-                    cur = newCur;
-                    // 方法2：先更新cur的key，然后去右子树中删除successor
-                    // cur.key = successor.key;
-                    // cur.right = delete(cur.right, cur.key);
+                    cur.key = successor.key;
+                    cur.value = successor.value;
                 }
             }
             if (cur != null) {
