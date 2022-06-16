@@ -30,6 +30,9 @@ public class SizeBalancedTree {
             SbNode<K, V> left = cur.left;
             cur.left = left.right;
             left.right = cur;
+            // size更新也可以写成：
+            // left.size = cur.size
+            // cur.size = (cur.left == null ? 0 : cur.left.size) + (cur.right == null ? 0 : cur.right.size) + 1;
             cur.size = (cur.left == null ? 0 : cur.left.size) + (cur.right == null ? 0 : cur.right.size) + 1;
             left.size = (left.left == null ? 0 : left.left.size) + (left.right == null ? 0 : left.right.size) + 1;
             return left;
@@ -40,6 +43,9 @@ public class SizeBalancedTree {
             SbNode<K, V> right = cur.right;
             cur.right = right.left;
             right.left = cur;
+            // size更新也可以写成
+            // right.size = cur.size
+            // cur.size = (cur.left == null ? 0 : cur.left.size) + (cur.right == null ? 0 : cur.right.size) + 1;
             cur.size = (cur.left == null ? 0 : cur.left.size) + (cur.right == null ? 0 : cur.right.size) + 1;
             right.size = (right.left == null ? 0 : right.left.size) + (right.right == null ? 0 : right.right.size) + 1;
             return right;
@@ -313,7 +319,7 @@ public class SizeBalancedTree {
             if (kth == leftSize + 1) {
                 return cur;
             } else if (kth < leftSize + 1) {
-                return getIndex(cur.left, kth - 1);
+                return getIndex(cur.left, kth);
             } else {
                 return getIndex(cur.right, kth - leftSize - 1);
             }
