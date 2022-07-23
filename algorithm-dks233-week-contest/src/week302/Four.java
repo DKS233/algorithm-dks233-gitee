@@ -9,32 +9,41 @@ import java.util.Arrays;
  * @create 2022-07-17-10:23
  */
 public class Four {
+    public static void main(String[] args) {
+        Four four = new Four();
+        int[] nums1 = new int[]{2, 8, 2};
+        int[] nums2 = new int[]{6, 8, 9};
+        four.minOperations(nums1, nums2);
+    }
+
     public int minOperations(int[] nums, int[] numsDivide) {
         // 找numsDivide的最大公约数
         int maxCommonDivisor = numsDivide[0];
         for (int index = 1; index < numsDivide.length; index++) {
-            maxCommonDivisor = Math.min(maxCommonDivisor(numsDivide[0], numsDivide[index]), maxCommonDivisor);
+            maxCommonDivisor = maxCommonDivisor(maxCommonDivisor, numsDivide[index]);
         }
         // nums排序
         Arrays.sort(nums);
+        if (maxCommonDivisor == 1) {
+            return nums[0] == 1 ? 0 : -1;
+        }
+        System.out.println(maxCommonDivisor);
         // 统计nums中各元素出现的次数
         // 如果最小值可以被最大公约数整除，停止，否则一直删除最小元素
         int index = 0;
         int count = 0;
         while (true) {
-            int min = nums[index];
-            if (maxCommonDivisor >= min && maxCommonDivisor % min == 0) {
-                break;
-            }
-            while (index < nums.length && nums[index] == min) {
+            while (index < nums.length && !(nums[index] <= maxCommonDivisor && (maxCommonDivisor % nums[index] == 0))) {
                 count++;
                 index++;
             }
-            // 删到越界仍然满足不了条件
+            // 越界也找不到符合要求的
             if (index == nums.length) {
                 return -1;
             }
-            // 未越界，去下一个不等于最小元素的地方判断
+            if (nums[index] <= maxCommonDivisor && maxCommonDivisor % nums[index] == 0) {
+                break;
+            }
         }
         return count;
     }
