@@ -44,7 +44,7 @@ public class TargetSum {
         // 两种情况需要排序：
         // 情况1：target为负数，sum小于target绝对值
         // 情况2：target为正数，sum小于target
-        // 情况1和情况2合起来：sum小于target绝对值，组合树肯定是0，直接返回0
+        // 情况1和情况2合起来：sum小于target绝对值，组合数肯定是0，直接返回0
         // 由于用到数组，将rest转换成正数区间内，两边同时加sum-target，将rest范围转换为[0,sum*2]
         // 按暴力递归：dp[rest]=dp[rest+nums[index]][index+1]+dp[rest-nums[index]][index+1]
         // rest∈[target-sum,target+sum]
