@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * leetcode54. 螺旋矩阵
  * leetcode59. 螺旋矩阵 II
+ * leetcode2326. 螺旋矩阵 IV
  *
  * @author dks233
  * @create 2022-07-06-21:06
@@ -101,5 +102,76 @@ public class SpiralMatrix {
             }
         }
         return matrix;
+    }
+
+    public int[][] spiralMatrix(int m, int n, ListNode head) {
+        int[][] matrix = new int[m][n];
+        // 上下左右边界
+        int left = 0, right = n - 1, up = 0, down = m - 1;
+        int row = 0, column = 0;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                matrix[i][j] = -1;
+            }
+        }
+        matrix[row][column] = head.val;
+        // 顺时针顺序：右下左上
+        while (up <= down && right >= left) {
+            // 右
+            while (column + 1 <= right) {
+                if (head != null && head.next != null) {
+                    head = head.next;
+                    matrix[row][++column] = head.val;
+                } else {
+                    break;
+                }
+            }
+            up++;
+            // 下
+            while (row + 1 <= down) {
+                if (head != null && head.next != null) {
+                    head = head.next;
+                    matrix[++row][column] = head.val;
+                } else {
+                    break;
+                }
+            }
+            right--;
+            // 左
+            while (column - 1 >= left) {
+                if (head != null && head.next != null) {
+                    head = head.next;
+                    matrix[row][--column] = head.val;
+                } else {
+                    break;
+                }
+            }
+            down--;
+            // 上
+            while (row - 1 >= up) {
+                if (head != null && head.next != null) {
+                    head = head.next;
+                    matrix[--row][column] = head.val;
+                } else {
+                    break;
+                }
+            }
+            left++;
+        }
+        return matrix;
+    }
+
+    public static class ListNode {
+        int val;
+        ListNode next;
+
+        public ListNode(int val) {
+            this.val = val;
+        }
+
+        public ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
     }
 }
