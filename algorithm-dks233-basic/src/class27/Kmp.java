@@ -1,24 +1,34 @@
-package other;
+package class27;
 
 /**
- * leetcode28. 实现 strStr()
+ * 图解：KMP.drawio
  *
  * @author dks233
- * @create 2022-07-15-22:06
+ * @create 2022-07-30-18:56
  */
-public class FirstStrStr {
-
+@SuppressWarnings("ALL")
+public class Kmp {
     // 返回s1中s2第一次出现的位置
-    public static int strStr(String s1, String s2) {
+    // N:s1的长度
+    // M:s2的长度
+    public static int getFirstIndex(String s1, String s2) {
         if (s1 == null || s2 == null || s2.length() < 1 || s1.length() < s2.length()) {
             return -1;
         }
         char[] str1 = s1.toCharArray();
         char[] str2 = s2.toCharArray();
+        // 时间复杂度：O(M)
         int[] next = getNextArray(str2);
         // 当前需要比对的位置：str1中的x位置和str2中的y位置
         int x = 0;
         int y = 0;
+        // x∈[0,N] y∈[0,M]
+        // 时间复杂度：x∈[0,N] x-y∈[N-M,N]
+        // 循环第一个分支：x↑ y↑ x-y不变
+        // 循环第一个分支：x↑ y不变 x-y↑
+        // 循环第三个分支：x不变 y↓ x-y↑
+        // x和x-y两个量在区间内只会上升或不变，且次数小于等于N，加起来小于两倍的N
+        // 所以时间复杂度是O(N)
         while (x < str1.length && y < str2.length) {
             if (str1[x] == str2[y]) {
                 x++;
@@ -40,6 +50,10 @@ public class FirstStrStr {
         return y == str2.length ? x - y : -1;
     }
 
+    // 时间复杂度：分析index和index-cn
+    // index∈[0,str2.length-1] cn>0 所以index-cn∈[-cn,str2.length-1-cn]
+    // index和index-cn都属于O(M)级别且在while循环中不会减小，所以总次数小于2M
+    // 所以时间复杂度是O(M)
     public static int[] getNextArray(char[] str2) {
         if (str2.length == 1) {
             return new int[]{-1};
@@ -63,5 +77,30 @@ public class FirstStrStr {
             }
         }
         return next;
+    }
+
+    // for test
+    public static String getRandomString(int possibilities, int size) {
+        char[] ans = new char[(int) (Math.random() * size) + 1];
+        for (int i = 0; i < ans.length; i++) {
+            ans[i] = (char) ((int) (Math.random() * possibilities) + 'a');
+        }
+        return String.valueOf(ans);
+    }
+
+    public static void main(String[] args) {
+        int possibilities = 5;
+        int strSize = 20;
+        int matchSize = 5;
+        int testTimes = 5000000;
+        System.out.println("test begin");
+        for (int i = 0; i < testTimes; i++) {
+            String str = getRandomString(possibilities, strSize);
+            String match = getRandomString(possibilities, matchSize);
+            if (getFirstIndex(str, match) != str.indexOf(match)) {
+                System.out.println("Oops!");
+            }
+        }
+        System.out.println("test finish");
     }
 }
