@@ -3,6 +3,8 @@ package week303;
 import java.util.HashSet;
 
 /**
+ * 2351. 第一个出现两次的字母
+ *
  * @author dks233
  * @create 2022-07-24-10:18
  */
