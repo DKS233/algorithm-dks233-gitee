@@ -126,7 +126,7 @@ public class LintCode127 {
             // 如果当前点最大深度没有统计过，统计直接邻居的最大深度，然后加上当前节点
             Long depth = 0L;
             for (DirectedGraphNode next : node.neighbors) {
-                depth += process(next, map);
+                depth = Math.max(process(next, map), depth);
             }
             // 将当前节点最大深度加入到缓存中，方便后续直接获取
             map.put(node, depth + 1);
