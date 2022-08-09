@@ -38,4 +38,19 @@ public class PostfixExpression {
         }
         return stack.pop();
     }
+
+    public static void main(String[] args) {
+        PostfixExpression postfixExpression = new PostfixExpression();
+        String[] strs = new String[9];
+        strs[0] = "11";
+        strs[1] = "2";
+        strs[2] = "3";
+        strs[3] = "+";
+        strs[4] = "-";
+        strs[5] = "10";
+        strs[6] = "2";
+        strs[7] = "-";
+        strs[8] = "*";
+        System.out.println(postfixExpression.evalRPN(strs));
+    }
 }
