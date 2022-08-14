@@ -100,6 +100,7 @@ public class PrefixTree {
             }
             char[] chars = word.toCharArray();
             NodeOne node = root;
+            node.pass--;
             int path = 0;
             for (int i = 0; i < chars.length; i++) {
                 path = chars[i] - 'a';
@@ -203,6 +204,7 @@ public class PrefixTree {
             }
             char[] chars = word.toCharArray();
             NodeTwo node = root;
+            node.pass--;
             int path = 0;
             for (int i = 0; i < chars.length; i++) {
                 path = chars[i];
