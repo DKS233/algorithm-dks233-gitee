@@ -27,6 +27,7 @@ public class LongestIncrementalPath {
             return count[row][column];
         }
         // 从当前位置往上下左右走，前提条件：上下左右的值比当前的值大
+        // 注：这里curMax必须是1，如果进不去if语句中返回也得是1
         int curMax = 1;
         if (row - 1 >= 0 && matrix[row][column] < matrix[row - 1][column]) {
             curMax = Math.max(curMax, 1 + process(matrix, row - 1, column));
