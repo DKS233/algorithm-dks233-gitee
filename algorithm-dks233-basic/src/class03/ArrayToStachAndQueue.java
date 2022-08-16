@@ -13,6 +13,7 @@ import java.util.Stack;
  * @author dks233
  * @create 2022-03-26-21:30
  */
+@SuppressWarnings("ALL")
 public class ArrayToStachAndQueue {
     public static void main(String[] args) {
         int testTimes = 100000;
@@ -157,6 +158,4 @@ public class ArrayToStachAndQueue {
             return size == 0;
         }
     }
-
-
 }
