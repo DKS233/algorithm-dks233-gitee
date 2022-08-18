@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public class CountSort {
     public static void main(String[] args) {
-        int testTimes = 100000;
+        int testTimes = 10000;
         int maxLen = 23333;
         int maxValue = 233;
         boolean isSuccess = true;
@@ -33,8 +33,8 @@ public class CountSort {
     public static int[] randomArr(int maxLen, int maxValue) {
         int len = (int) (Math.random() * (maxLen)) + 1;
         int[] randomArr = new int[len];
-        for (int element : randomArr) {
-            element = (int) (Math.random() * (maxValue + 1));
+        for (int index = 0; index < randomArr.length; index++) {
+            randomArr[index] = (int) (Math.random() * (maxValue + 1));
         }
         return randomArr;
     }

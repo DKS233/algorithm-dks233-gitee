@@ -76,7 +76,7 @@ public class MinHeapSort {
         int heapSize = arr.length;
         // 将数组转换成小根堆，然后0位置的数和heapSize-1位置的数交换，然后heapSize--，将heapSize-1位置
         // 的数剔除出小根堆，形成新的数组。然后0位置的数heapify，再将数组整体转换为小根堆，...
-        // 数组转换成小根堆：方法1：整个数组从下往上heapify
+        // 数组转换成小根堆：方法2：整个数组从下往上heapify
         for (int i = heapSize - 1; i >= 0; i--) {
             heapify(arr, i, heapSize);
         }

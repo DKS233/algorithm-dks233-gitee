@@ -11,7 +11,6 @@ import java.util.Arrays;
  * 数组中有元素小于0时，求出数组最小值，如果最小值为负数，数组中每个数加上最小值的绝对值，将数组元素都变为大于等于0的数，
  * 等全部排序完毕再统一减去最小数的绝对值
  * 注：本题未考虑溢出问题
- * 注：复杂度：O(N*Math.log10(100))
  *
  * @author dks233
  * @create 2022-04-14-10:10
@@ -34,10 +33,10 @@ public class RadixSort {
         for (int i = 1; i <= maxDigit; i++) {
             for (int j = 0; j < arr.length; j++) {
                 // 获取数组元素每个十进制位上的数（个位，十位，百位，...）
-                int indexValue = getIndexValue(arr[i], i);
+                int indexValue = getIndexValue(arr[j], i);
                 // 将对应的数组元素按照十进制位上的数放到桶中
                 // 如：个位数上是0，就放到0桶中
-                buckets.get(indexValue).add(arr[i]);
+                buckets.get(indexValue).add(arr[j]);
             }
             // 全部放到桶中后，每个桶中元素按照先进先出的顺序出桶
             int currentIndex = 0;
@@ -57,12 +56,12 @@ public class RadixSort {
         int[] help = new int[arr.length];
         // 数组中最大值的最大位数
         int maxDigit = getMaxDigit(arr);
-        // 先准备count数组和count'数组
-        int[] count = new int[10];
         // 遍历每位，分别基数排序
         for (int i = 1; i <= maxDigit; i++) {
             int j = 0;
             int k = 0;
+            // 先准备count数组和count'数组
+            int[] count = new int[10];
             // 得到count数组
             for (j = 0; j < arr.length; j++) {
                 int indexValue = getIndexValue(arr[j], i);
@@ -96,8 +95,8 @@ public class RadixSort {
             min = Math.min(element, min);
         }
         if (min < 0) {
-            for (int element : arr) {
-                element += Math.abs(min);
+            for (int index = 0; index < arr.length; index++) {
+                arr[index] += Math.abs(min);
             }
         }
         // 数组中最大的数有多少位
@@ -111,10 +110,10 @@ public class RadixSort {
         for (int i = 1; i <= maxDigit; i++) {
             for (int j = 0; j < arr.length; j++) {
                 // 获取数组元素每个十进制位上的数（个位，十位，百位，...）
-                int indexValue = getIndexValue(arr[i], i);
+                int indexValue = getIndexValue(arr[j], i);
                 // 将对应的数组元素按照十进制位上的数放到桶中
                 // 如：个位数上是0，就放到0桶中
-                buckets.get(indexValue).add(arr[i]);
+                buckets.get(indexValue).add(arr[j]);
             }
             // 全部放到桶中后，每个桶中元素按照先进先出的顺序出桶
             int currentIndex = 0;
@@ -126,8 +125,8 @@ public class RadixSort {
         }
         // 最小值是负数的话，统一减去最小值绝对值
         if (min < 0) {
-            for (int element : arr) {
-                element -= Math.abs(min);
+            for (int index = 0; index < arr.length; index++) {
+                arr[index] -= Math.abs(min);
             }
         }
     }
@@ -135,10 +134,13 @@ public class RadixSort {
     // 获取数组中最大值的位数
     public static int getMaxDigit(int[] arr) {
         int maxDigit = 1;
-        for (int value : arr) {
-            while (value >= Math.pow(10, maxDigit)) {
-                maxDigit++;
+        for (int number : arr) {
+            int count = 0;
+            while (number >= 1) {
+                count += 1;
+                number /= 10;
             }
+            maxDigit = Math.max(count, maxDigit);
         }
         return maxDigit;
     }
