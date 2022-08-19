@@ -100,6 +100,4 @@ public class ArrayUtils {
     public static int randomNumber(int maxValue) {
         return (int) (Math.random() * (maxValue + 1)) - (int) (Math.random() * (maxValue + 1));
     }
-
-
 }

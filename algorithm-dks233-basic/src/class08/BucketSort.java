@@ -16,6 +16,7 @@ import java.util.List;
  * @author dks233
  * @create 2022-08-18-23:28
  */
+@SuppressWarnings("ALL")
 public class BucketSort {
     public static void bucketSort(int[] arr, int bucketSize) {
         int min = arr[0];
