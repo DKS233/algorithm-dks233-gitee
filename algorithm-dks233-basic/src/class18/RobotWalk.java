@@ -35,7 +35,7 @@ public class RobotWalk {
      * @param rest 还剩多少步没走
      * @param end  最终位置
      * @param n    总共有多少个位置
-     * @return 当前路径最终如果走到end，返回1，当前路径如果走不到end，就返回0
+     * @return rest步后走到end位置的方法数
      */
     public static int process(int cur, int rest, int end, int n) {
         // 当前路径走完，是否到达了end，如果到达end，当前路径有效
@@ -87,7 +87,7 @@ public class RobotWalk {
      * @param end  最终位置
      * @param n    总共有多少个位置
      * @param dp   (cur,rest)数组，(当前位置，还剩多少步数）
-     * @return 当前路径最终如果走到end，返回1，当前路径如果走不到end，就返回0
+     * @return rest步后走到end位置的方法数
      */
     public static int process(int cur, int rest, int end, int n, int[][] dp) {
         // (cur,rest)!=-1 (cur,rest)计算过，直接从缓存里取
@@ -133,7 +133,7 @@ public class RobotWalk {
         // 初始都是0
         int[][] dp = new int[n + 1][k + 1];
         // 先填第0列
-        dp[4][0] = 1;
+        dp[p][0] = 1;
         // 从第1列开始，1列1列填
         for (int rest = 1; rest <= k; rest++) {
             for (int cur = 1; cur <= n; cur++) {

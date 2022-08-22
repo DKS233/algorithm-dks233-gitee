@@ -1,5 +1,7 @@
 package class18;
 
+import java.util.Scanner;
+
 /**
  * 给定一个整型数组arr，代表数值不同的纸牌排成一条线
  * 玩家A和玩家B依次拿走每张纸牌
@@ -198,5 +200,37 @@ public class TakeCards {
         System.out.println(getWinnerScoreTwo(arr));
         System.out.println(getWinnerScoreThree(arr));
         System.out.println(getWinnerScoreFour(arr));
+    }
+
+    // 在线测试
+    // 链接：https://www.nowcoder.com/questionTerminal/19c98d950b3347d19f991d10bde12288
+    public static class Main {
+        public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in);
+            int n = scanner.nextInt();
+            int[] arr = new int[n];
+            for (int i = 0; i < n; i++) {
+                int value = scanner.nextInt();
+                arr[i] = value;
+            }
+            System.out.println(bestMethod(arr));
+        }
+
+        // 下 左
+        public static int bestMethod(int[] arr) {
+            int[][] firstHand = new int[arr.length][arr.length];
+            int[][] secondHand = new int[arr.length][arr.length];
+            for (int i = 0; i < firstHand.length; i++) {
+                firstHand[i][i] = arr[i];
+                secondHand[i][i] = 0;
+            }
+            for (int right = 1; right < arr.length; right++) {
+                for (int left = right - 1; left >= 0; left--) {
+                    firstHand[left][right] = Math.max(arr[left] + secondHand[left + 1][right], arr[right] + secondHand[left][right - 1]);
+                    secondHand[left][right] = Math.min(firstHand[left + 1][right], firstHand[left][right - 1]);
+                }
+            }
+            return Math.max(firstHand[0][arr.length - 1], secondHand[0][arr.length - 1]);
+        }
     }
 }
