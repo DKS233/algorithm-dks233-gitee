@@ -1,5 +1,7 @@
 package class20;
 
+import java.util.Scanner;
+
 /**
  * 请同学们自行搜索或者想象一个象棋的棋盘，
  * 然后把整个棋盘放入第一象限，棋盘的最左下角是(0,0)位置
@@ -7,6 +9,7 @@ package class20;
  * 给你三个 参数 x，y，k
  * 返回"马"从(0,0)位置出发，必须走k步
  * 最后落在(x,y)上的方法数有多少种?
+ * 测试链接：https://www.nowcoder.com/questionTerminal/c45704a41617402fb5c34a1778bb2645
  *
  * @author dks233
  * @create 2022-05-20-20:13
@@ -82,5 +85,43 @@ public class ChessHorse {
         int k = 10;
         System.out.println(getMethodOne(x, y, k));
         System.out.println(getMethodTwo(x, y, k));
+    }
+
+    // 测试网页提交代码
+    public static class Main {
+        // 横坐标9条线：x:[0,9] y:[0,8]
+        public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in);
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            int k = scanner.nextInt();
+            // dp[rest][row][column] [row,column]再走rest步走到[x,y]的方法数
+            int[][][] dp = new int[k + 1][9][10];
+            dp[0][x][y] = 1;
+            for (int rest = 1; rest <= k; rest++) {
+                for (int row = 0; row < 9; row++) {
+                    for (int column = 0; column < 10; column++) {
+                        int result = 0;
+                        result += getDp(rest - 1, row + 2, column + 1, dp);
+                        result += getDp(rest - 1, row + 2, column - 1, dp);
+                        result += getDp(rest - 1, row - 2, column + 1, dp);
+                        result += getDp(rest - 1, row - 2, column - 1, dp);
+                        result += getDp(rest - 1, row + 1, column + 2, dp);
+                        result += getDp(rest - 1, row + 1, column - 2, dp);
+                        result += getDp(rest - 1, row - 1, column + 2, dp);
+                        result += getDp(rest - 1, row - 1, column - 2, dp);
+                        dp[rest][row][column] = result;
+                    }
+                }
+            }
+            System.out.println(dp[k][0][0]);
+        }
+
+        public static int getDp(int rest, int row, int column, int[][][] dp) {
+            if (row > 8 || row < 0 || column < 0 || column > 9) {
+                return 0;
+            }
+            return dp[rest][row][column];
+        }
     }
 }
