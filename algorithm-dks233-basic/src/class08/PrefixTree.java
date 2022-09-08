@@ -9,6 +9,7 @@ import java.util.HashMap;
  * @author dks233
  * @create 2022-04-11-20:52
  */
+@SuppressWarnings("ALL")
 public class PrefixTree {
     // 使用于字符串由小写字母a~z构成的情况
     public static class NodeOne {
