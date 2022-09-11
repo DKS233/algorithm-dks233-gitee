@@ -16,7 +16,7 @@ public class LongestElegantSubarray {
         int or = nums[0];
         int maxLen = 1;
         while (right < nums.length) {
-            // 如果右边界不符合就一直就一直更新左边界
+            // 如果右边界不符合就一直更新左边界
             while (left < nums.length && (nums[right] & or) != 0) {
                 or ^= nums[left];
                 left++;
