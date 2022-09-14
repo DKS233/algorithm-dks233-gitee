@@ -9,6 +9,7 @@ package dp;
  * @author dks233
  * @create 2022-06-26-17:32
  */
+@SuppressWarnings("ALL")
 public class BuyAndSellStock {
     // 问题一暴力解法
     public static class MethodOne {
