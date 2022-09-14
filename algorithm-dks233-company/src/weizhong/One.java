@@ -32,6 +32,7 @@ public class One {
         for (int i = 0; i < 3; i++) {
             newStr[i] = strs[i];
         }
+        Arrays.sort(newStr, (a, b) -> (b + a).compareTo(a + b));
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < newStr.length; i++) {
             builder.append(newStr[i]);
