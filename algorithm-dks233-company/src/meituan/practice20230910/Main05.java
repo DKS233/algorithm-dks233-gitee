@@ -1,4 +1,4 @@
-package meituan;
+package meituan.practice20230910;
 
 import java.util.HashMap;
 import java.util.Map;
