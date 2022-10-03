@@ -38,6 +38,8 @@ public class PrimeCount {
             Arrays.fill(is, true);
             for (int i = 2; i * i < n; i++) {
                 if (is[i]) {
+                    // 轮到3的时候从3*3开始
+                    // 因为1*3,2*3都被过滤掉了
                     for (int j = i * i; j < n; j += i) {
                         is[j] = false;
                     }
